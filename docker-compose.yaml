@@ -1,0 +1,63 @@
+version: "3.2"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+  mysql-container:
+    image: mysql
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_USER=springuser
+      - MYSQL_PASSWORD=ThePassword
+      - MYSQL_DATABASE=payments
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10      
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"        
+  payment-service-container:
+    build:
+      context: ../payment-service/
+      dockerfile: ./Dockerfile
+    ports:
+      - 9090:9090
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/payments?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_ADDRESSES=rabbitmq:5672
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+  risk-engine-container:
+    build:
+      context: ../risk-engine/
+      dockerfile: ./Dockerfile
+    ports:
+      - 9091:9091
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/payments?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_ADDRESSES=rabbitmq:5672
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started        
