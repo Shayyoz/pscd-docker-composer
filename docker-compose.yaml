@@ -29,7 +29,7 @@ services:
       - "./conf.d:/etc/mysql/conf.d:ro"        
   payment-service-container:
     build:
-      context: ../payment-service/
+      context: ../payments-service/
       dockerfile: ./Dockerfile
     ports:
       - 9090:9090
