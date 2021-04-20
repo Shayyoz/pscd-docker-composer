@@ -30,5 +30,5 @@ If you are interested on cloning the original code base of Payments Service and 
 * `risk-engine` repo (git clone https://github.com/Shayyoz/risk-engine.git)
 
 ### Docker Compose Run
-Finally, with Bash Shell navigate to `WORKING_DIR/pscd-docker-composer` folder and Run `docker-compose up` command.
+Finally, with Bash Shell navigate to `WORKING_DIR/pscd-docker-composer` folder and Run `docker-compose up` command.  
 The environment should be up after a few minutes.
