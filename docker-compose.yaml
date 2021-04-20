@@ -29,7 +29,7 @@ services:
       - "./conf.d:/etc/mysql/conf.d:ro"        
   payment-service-container:
     build:
-      context: ../payments-service/
+      context: ./payments-service/
       dockerfile: ./Dockerfile
     ports:
       - 9090:9090
@@ -46,7 +46,7 @@ services:
         condition: service_started
   risk-engine-container:
     build:
-      context: ../risk-engine/
+      context: ./risk-engine/
       dockerfile: ./Dockerfile
     ports:
       - 9091:9091
@@ -60,4 +60,4 @@ services:
       mysql-container:
         condition: service_healthy
       rabbitmq:
-        condition: service_started        
+        condition: service_started
