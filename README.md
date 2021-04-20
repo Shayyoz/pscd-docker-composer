@@ -11,7 +11,7 @@ If you want to run any of the services with IDE, make sure it supports:
 - Maven 
 
 ## Run Instructions
-This Repository contains the *docker-compose.yaml* file that creates the hole environment for four services:
+This Repository contains the *docker-compose.yaml* file that creates the hole environment with four services:
 - Payments Service (Java Application)
 - Risk Engine (Java Application)
 - MySql container (DB)
