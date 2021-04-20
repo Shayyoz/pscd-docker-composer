@@ -31,4 +31,4 @@ If you are interested on cloning the original code base of Payments Service and 
 
 ### Docker Compose Run
 Finally, with Bash Shell navigate to `WORKING_DIR/pscd-docker-composer` folder and Run `docker-compose up` command.
-The environment should be up in less than a minute.
+The environment should be up after a few minutes.
